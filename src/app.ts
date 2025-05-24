@@ -59,6 +59,7 @@ class App {
     }
 
     await connect(dbConnection.url);
+    console.log("=============DB Connection successfull===========")
   }
 
   private initializeMiddlewares() {
