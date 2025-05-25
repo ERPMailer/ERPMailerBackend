@@ -59,17 +59,24 @@ class App {
     }
 
     await connect(dbConnection.url);
-    console.log("=============DB Connection successfull===========")
+    console.log('=============DB Connection successfull===========');
   }
 
   private initializeMiddlewares() {
     this.app.use(morgan(LOG_FORMAT, { stream }));
-    this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
+    this.app.use(
+      cors({
+        origin: ORIGIN,
+        credentials: CREDENTIALS,
+        methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+        allowedHeaders: ['Content-Type', 'Authorization'],
+      }),
+    );
     this.app.use(hpp());
     this.app.use(helmet());
     this.app.use(compression());
-    this.app.use(express.json());
-    this.app.use(express.urlencoded({ extended: true }));
+    this.app.use(express.json({ limit: '50mb' }));
+    this.app.use(express.urlencoded({ limit: '50mb', extended: true }));
     this.app.use(cookieParser());
   }
 
