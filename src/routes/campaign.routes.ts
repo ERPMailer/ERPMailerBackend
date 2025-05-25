@@ -15,6 +15,9 @@ public path = '/';
 
   private initializeRoutes() {
     this.router.post(`${this.path}createCampaign`,  this.campignController.create);
+        this.router.get(`${this.path}campaign/all`, this.campignController.findAll);
+    this.router.get(`${this.path}:id`, this.campignController.getById);
+    this.router.put(`${this.path}update/:id`, this.campignController.update);
   
   }
 }
