@@ -66,10 +66,10 @@ class App {
     this.app.use(morgan(LOG_FORMAT, { stream }));
     this.app.use(
       cors({
-        origin: ORIGIN,
-        credentials: CREDENTIALS,
+        origin: true,
+        credentials: true,
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-        allowedHeaders: ['Content-Type', 'Authorization'],
+        allowedHeaders: ['Content-Type', 'Authorization', 'token'],
       }),
     );
     this.app.use(hpp());

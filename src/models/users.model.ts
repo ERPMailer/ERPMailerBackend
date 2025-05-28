@@ -8,9 +8,17 @@ const userSchema: Schema = new Schema(
       required: true,
       unique: true,
     },
-    phone: {
+    displayName: {
       type: String,
       required: true,
+    },
+    profileLogo:{
+      type:String,
+      require:false
+    },
+    phone: {
+      type: String,
+      required: false,
     },
     password: {
       type: String,

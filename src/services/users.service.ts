@@ -4,6 +4,7 @@ import { HttpException } from '@exceptions/HttpException';
 import { User } from '@interfaces/users.interface';
 import userModel from '@models/users.model';
 import { isEmpty } from '@utils/util';
+import admin from '@/utils/firebase';
 
 class UserService {
   public users = userModel;
@@ -14,7 +15,7 @@ class UserService {
   }
 
   public async findUserById(userId: string): Promise<User> {
-    if (isEmpty(userId)) throw new HttpException(400, "UserId is empty");
+    if (isEmpty(userId)) throw new HttpException(400, 'UserId is empty');
 
     const findUser: User = await this.users.findOne({ _id: userId });
     if (!findUser) throw new HttpException(409, "User doesn't exist");
@@ -22,20 +23,31 @@ class UserService {
     return findUser;
   }
 
-  public async createUser(userData: CreateUserDto): Promise<User> {
-    if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
+  public async createUser(idToken: string): Promise<User> {
+    const decodedToken = await admin.auth().verifyIdToken(idToken);
+    const uid = decodedToken.uid;
 
-    const findUser: User = await this.users.findOne({ email: userData.email });
-    if (findUser) throw new HttpException(409, `This email ${userData.email} already exists`);
+    const userRecord = await admin.auth().getUser(uid);
+    console.log('User data:', userRecord.toJSON());
 
-    const hashedPassword = await hash(userData.password, 10);
-    const createUserData: User = await this.users.create({ ...userData, password: hashedPassword });
+    const hashedPassword = await hash('123', 10);
 
-    return createUserData;
+    const userData = {
+      email: userRecord.email,
+      displayName: userRecord.displayName,
+      profileLogo: userRecord.photoURL ? userRecord.photoURL : null,
+      phone: userRecord.phoneNumber ? userRecord.phoneNumber : null,
+      userRole: 'user',
+      password: hashedPassword,
+    };
+
+    const userDetails: User = await this.users.findOneAndUpdate({email:userRecord.email}, userData, { upsert: true });
+
+    return userDetails;
   }
 
   public async updateUser(userId: string, userData: CreateUserDto): Promise<User> {
-    if (isEmpty(userData)) throw new HttpException(400, "userData is empty");
+    if (isEmpty(userData)) throw new HttpException(400, 'userData is empty');
 
     if (userData.email) {
       const findUser: User = await this.users.findOne({ email: userData.email });
