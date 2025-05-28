@@ -5,7 +5,7 @@ import validationMiddleware from "@/middlewares/validation.middleware";
 import { Router } from "express";
 
 export default class CampaignRoutes implements Routes {
-public path = '/';
+public path = '/campaign';
   public router = Router();
   public campignController = new CampaignController();
 
@@ -14,10 +14,10 @@ public path = '/';
   }
 
   private initializeRoutes() {
-    this.router.post(`${this.path}createCampaign`,  this.campignController.create);
-        this.router.get(`${this.path}campaign/all`, this.campignController.findAll);
-    this.router.get(`${this.path}:id`, this.campignController.getById);
-    this.router.put(`${this.path}update/:id`, this.campignController.update);
+    this.router.post(`${this.path}/create`,  this.campignController.create);
+        this.router.get(`${this.path}/all`, this.campignController.findAll);
+    this.router.get(`${this.path}/:id`, this.campignController.getById);
+    this.router.put(`${this.path}/update/:id`, this.campignController.update);
   
   }
 }
