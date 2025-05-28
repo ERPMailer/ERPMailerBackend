@@ -5,9 +5,11 @@ import { User } from '@interfaces/users.interface';
 import userModel from '@models/users.model';
 import { isEmpty } from '@utils/util';
 import admin from '@/utils/firebase';
+import AuthService from './auth.service';
 
 class UserService {
   public users = userModel;
+  public authService = new AuthService();
 
   public async findAllUser(): Promise<User[]> {
     const users: User[] = await this.users.find();
@@ -23,7 +25,7 @@ class UserService {
     return findUser;
   }
 
-  public async createUser(idToken: string): Promise<User> {
+  public async createUser(idToken: string): Promise<{ cookie: string; userDetails: User }> {
     const decodedToken = await admin.auth().verifyIdToken(idToken);
     const uid = decodedToken.uid;
 
@@ -43,7 +45,9 @@ class UserService {
 
     const userDetails: User = await this.users.findOneAndUpdate({email:userRecord.email}, userData, { upsert: true });
 
-    return userDetails;
+     const tokenData = this.authService.createToken(userDetails);
+    const cookie = this.authService.createCookie(tokenData);
+    return {cookie , userDetails};
   }
 
   public async updateUser(userId: string, userData: CreateUserDto): Promise<User> {

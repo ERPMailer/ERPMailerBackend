@@ -30,9 +30,10 @@ class UsersController {
   public createUser = async (req: Request, res: Response, next: NextFunction) => {
     try {
       const accessToken = String(req.headers.token);
-      const createUserData: User = await this.userService.createUser(accessToken);
+      const { cookie, userDetails } = await this.userService.createUser(accessToken);
+      res.cookie('token', cookie);
 
-      res.status(201).json({ data: createUserData, message: 'created' });
+      res.status(201).json({ data: userDetails, message: 'created' });
     } catch (error) {
       next(error);
     }
