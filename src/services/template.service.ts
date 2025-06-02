@@ -33,7 +33,7 @@ export class TemplateService {
           }
         }
       }
-
+   
       // Create template object
       const template: EmailTemplate = {
         name: data.name,
@@ -45,7 +45,7 @@ export class TemplateService {
         buttons: data.buttons || [],
         variables: data.variables || [],
         attachments: processedAttachments,
-        userId,
+        userId:userId,
         createdBy:userId
       };
 
@@ -62,7 +62,7 @@ export class TemplateService {
   }
 
   async getUserTemplates(userId: string): Promise<EmailTemplate[]> {
-    return await this.templateModel.find({ createdBy: userId });
+    return await this.templateModel.find({ userId: userId });
   }
 
   async updateTemplate(id: string, data: Partial<CreateTemplateRequest>): Promise<EmailTemplate | null> {

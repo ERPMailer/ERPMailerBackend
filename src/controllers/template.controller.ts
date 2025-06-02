@@ -11,8 +11,8 @@ export class TemplateController {
   public createTemplate = async (req: RequestWithUser, response: Response) => {
     try {
       const data: CreateTemplateRequest = JSON.parse(req.body.template);
-      const userId = new Types.ObjectId().toString();
-
+     // const userId = new Types.ObjectId().toString();
+const userId = '68373f988a25f210d16d9d57';
       //   const validationErrors = TemplateValidator.validateCreateTemplate(data);
       //   if (validationErrors.length > 0) {
       //     const res: CreateTemplateResponse = {
@@ -71,9 +71,10 @@ export class TemplateController {
     }
   }
 
-  async getUserTemplates(req: RequestWithUser, response: Response): Promise<void> {
+  public getUserTemplates= async (req: RequestWithUser, response: Response)=> {
     try {
-      const userId = req.user?._id;
+      // const userId = req.user?._id;
+      const userId = '68373f988a25f210d16d9d57';
       if (!userId) {
         response.status(401).json({
           success: false,
