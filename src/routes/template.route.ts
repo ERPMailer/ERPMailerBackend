@@ -15,7 +15,7 @@ export default class TemplateRoute implements Routes {
 private initializeRoutes() {
 
 this.router.post(`${this.path}/create`,  this.templateController.createTemplate);
-this.router.get(`${this.path}/get-template-user-id`, this.templateController.getUserTemplates);
+this.router.get(`${this.path}/get-template-user-id`,authMiddleware, this.templateController.getUserTemplates);
 this.router.get('/:id', authMiddleware, this.templateController.getTemplate);
 this.router.put('/:id', authMiddleware, this.templateController.updateTemplate);
 this.router.delete('/:id', authMiddleware, this.templateController.deleteTemplate);

@@ -73,8 +73,8 @@ const userId = '68373f988a25f210d16d9d57';
 
   public getUserTemplates= async (req: RequestWithUser, response: Response)=> {
     try {
-      // const userId = req.user?._id;
-      const userId = '68373f988a25f210d16d9d57';
+      const userId = req.user?._id;
+      // const userId = '68373f988a25f210d16d9d57';
       if (!userId) {
         response.status(401).json({
           success: false,
