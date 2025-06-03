@@ -57,7 +57,7 @@ class AuthService {
   }
 
   public createCookie(tokenData: TokenData): string {
-    return `${tokenData.token}; HttpOnly; Max-Age=${tokenData.expiresIn};`;
+    return `${tokenData.token}`;
   }
 }
 

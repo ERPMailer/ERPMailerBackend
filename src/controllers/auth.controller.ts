@@ -42,6 +42,15 @@ class AuthController {
       next(error);
     }
   };
+
+  public authenticateUser = async (req: RequestWithUser, res: Response, next: NextFunction) => {
+    try {
+      const userData: User = req.user;
+      return res.status(200).json(userData, );
+    } catch (error) {
+      next(error);
+    }
+  };
 }
 
 export default AuthController;
